@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>Strategy</title>
+<style>
+#strategy_div{width:100%;background-color:#AFA;}
+#quiz_div{width:100%;background-color:steelblue;}
+td{font-size:20pt}
+th,td,table{border:1px solid black;}
+table{width:100%;height:100%}
+td{text-align:center;vertical-align:middle;}
+.toprow{background-color:lightblue}
+.leftcol{background-color:#E88}
+</style>
+</head>
+
+<body>
+
+<table>
+<tr><td>
+<div id="strategy_div" class="main"></div>
+</td><td>
+<div id="quiz_div" class="main"></div>
+</td></tr>
+</table>
+
+<script>
+const rcvals=[
+	['','2','3','4','5','6','7','8','9','10','A',],
+	['8','H','H','H','D','D','H','H','H','H','H',],
+	['9','D','D','D','D','D','H','H','H','H','H',],
+	['10','D','D','D','D','D','D','D','D','H','H',],
+	['11','D','D','D','D','D','D','D','D','D','D',],
+	['12','H','H','S','S','S','H','H','H','H','H',],
+	['13','S','S','S','S','S','H','H','H','H','H',],
+	['14','S','S','S','S','S','H','H','H','H','H',],
+	['15','S','S','S','S','S','H','H','H','H','H',],
+	['16','S','S','S','S','S','H','H','H','H','H',],
+	['A2','H','H','D','D','D','H','H','H','H','H',],
+	['A3','H','H','D','D','D','H','H','H','H','H',],
+	['A4','H','H','D','D','D','H','H','H','H','H',],
+	['A5','H','H','D','D','D','H','H','H','H','H',],
+	['A6','D','D','D','D','D','H','H','H','H','H',],
+	['A7','S','D','D','D','D','S','S','H','H','S',],
+	['A8','S','S','S','S','D','S','S','H','H','S',],
+	['A9','S','S','S','S','S','S','S','S','S','S',],
+	['AA','SP','SP','SP','SP','SP','SP','SP','SP','SP','SP',],
+	['22','H','SP','SP','SP','SP','SP','H','H','H','H',],
+	['33','H','H','SP','SP','SP','SP','H','H','H','H',],
+	['66','SP','SP','SP','SP','SP','H','H','H','H','H',],
+	['77','SP','SP','SP','SP','SP','SP','H','H','SP','H',],
+	['88','SP','SP','SP','SP','SP','SP','SP','SP','SP','SP',],
+	['99','SP','SP','SP','SP','SP','S','SP','SP','S','S',],
+	['1010','S','S','S','S','S','S','S','S','S','S',],
+];
+html="<table>"
+for(var ridx=0;ridx<rcvals.length;ridx++){
+	if(ridx==0){html+="<tr class='toprow'>"}
+	else{html+="<tr>"}
+	for(var cidx=0;cidx<rcvals[ridx].length;cidx++){
+		if(cidx==0){html+="<td class='leftcol'>"+rcvals[ridx][cidx]+"</td>"}
+		else{html+="<td>"+rcvals[ridx][cidx]+"</td>"}
+	}
+	html+="</tr>"
+}
+html+="</table>"
+document.getElementById("strategy_div").innerHTML=html;
+
+document.getElementById("quiz_div").innerHTML="";
+
+
+</script>
+</body>
+</html>
