@@ -5,6 +5,7 @@ var BlackJackQuiz=function(obj_id){
 	//But we can at least see what the dealer had
 
 	var me={}
+	me.missed=[]
 	cshd=2
 	cshd_idcs=[cshd,]
 	for(var idx=1;idx<14;idx++){
@@ -113,7 +114,14 @@ var BlackJackQuiz=function(obj_id){
 
 			d3.select("#bj_quiz").html("")
 			if(me.step==0)
-				me.hand=me.deal()
+				if(me.missed.length>0){
+					if(Math.random()>0.5){
+						me.hand=me.missed.shift();
+					}
+					else
+						me.hand=me.deal()
+				}
+
 
 			hand=me.hand
 			//hand=[13,12,9,4]
@@ -262,7 +270,7 @@ var BlackJackQuiz=function(obj_id){
 			.html(stats_html);
 	}
 
-	me.wrong=function(){console.log(choice, "is WRONG");me.num_incorrect+=1;me.update_stats();}
+	me.wrong=function(){console.log(choice, "is WRONG");me.num_incorrect+=1;me.update_stats();me.missed.push(me.hand)}
 
 	me.right=function(){console.log(choice, "is RIGHT");me.num_correct+=1;me.update_stats();}
 
