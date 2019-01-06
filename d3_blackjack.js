@@ -46,9 +46,9 @@ var BlackJackQuiz=function(obj_id){
 
 	me.popup_id='snapshot_popup';
 	me.popup_html='<div style="height:50px;"></div>';//vertical spacer
-	me.popup_html+='<center><div style="width:80%";>BlackJack 2019<br>';
+	me.popup_html+='<center><div style="width:80%";>';
 	me.popup_html+='<br>';
-	me.popup_html+='<div id="bj_stats" class="bj_stats"></div>';
+	me.popup_html+='<div id="bj_stats" class="bj_stats"></div><br>';
 	me.popup_html+='<div id="bj_quiz" class="bj_quiz"></div>';
 	me.popup_html+="<div id='step0_buttons'><input class='button actionB' type='button' id='nextB' value='Next'></div></div>";
 	me.popup_html+="<div id='step1_buttons' style='display:none;'><table><tr>";
@@ -100,28 +100,20 @@ var BlackJackQuiz=function(obj_id){
 	me.step=0
 	me.hand=me.deal()
 
-	d3.selectAll(".actionB")
-		.on("click",function(){
-			ev_id=d3.event.target.id
-			console.log(ev_id);
-			if(ev_id=="nextB")choice=null;
-			else if(ev_id=="doubleB")choice="D";
-			else if(ev_id=="hitB")choice="H";
-			else if(ev_id=="standB")choice="S";
-			else if(ev_id=="splitB")choice="SP";
-
+	me.game_step=function(choice){
 			d3.event.preventDefault();
 
 			d3.select("#bj_quiz").html("")
-			if(me.step==0)
-				if(me.missed.length>0){
-					if(Math.random()>0.5){
-						me.hand=me.missed.shift();
-					}
-					else
-						me.hand=me.deal()
-				}
+			console.log("step: ",me.step);
 
+			if(me.step==0){
+				me.hand=me.deal()
+				if(me.missed.length>0){
+					if(Math.random()>0.5)
+						me.hand=me.missed.shift();
+				}
+			}
+			//me.hand=[10,12,13,10]
 
 			hand=me.hand
 			//hand=[13,12,9,4]
@@ -183,8 +175,8 @@ var BlackJackQuiz=function(obj_id){
 				if(r1<10)r1+=1;
 				console.log(r0,r1,[h2,h3])
 				if((r0+r1)==(h2+h3)){
-					if(r0==r1 && h2!=h3)continue;//unless both are pairs#small issue:10,J/Q/K -> r0==r1 after value-adjustment, but not really pair; is okay since stand for all, either way.
-					if(r0==11 && h2!=11 && h3!=11)continue;//
+					if(r0==r1 && h2!=h3){console.log("continue");continue;}//unless both are pairs#small issue:10,J/Q/K -> r0==r1 after value-adjustment, but not really pair; is okay since stand for all, either way.
+					if(r0==11 && h2!=11 && h3!=11){console.log("continue");continue;}//issue:inf cycl if BJ
 					row=ridx;
 					console.log("found row=",ridx);
 					break;
@@ -210,7 +202,9 @@ var BlackJackQuiz=function(obj_id){
 				if(td && me.step==1)td.style='background-color:red;';
 				else{console.log("no cell for that pair ... basic rule!")}
 				if(td && rcvals[row][h1]=="BJ"){
-					me.step+=1;
+					console.log("!!!BLACKJACK!!!")
+					//me.step=3;
+					//if(me.step>1)me.step=0;
 					td.style='background-color:red;';
 					d3.select("#action")
 						.text(rcvals[row][h1]);
@@ -244,16 +238,18 @@ var BlackJackQuiz=function(obj_id){
 			}
 			me.step+=1;
 			if(me.step>1)me.step=0;
+			if(rcvals[row][h1]=='BJ')me.step=0;
 			if(me.step==0){
 				d3.select("#step1_buttons").style('display','none');
 				d3.select("#step0_buttons").style('display','block');
+				//window.setTimeout(me.game_step('null'),1000)
 			}
 			else{
 				d3.select("#step1_buttons").style('display','block');
 				d3.select("#step0_buttons").style('display','none');
 			}
-
-		})
+			console.log("step: ",me.step)
+		}
 
 	me.num_correct=0;
 	me.num_incorrect=0;
@@ -283,5 +279,16 @@ var BlackJackQuiz=function(obj_id){
 			d3.select('.modal').style('opacity',op)
 		})
 	d3.select('.modal').style('opacity',0.6)
+	d3.selectAll(".actionB")
+		.on("click",function(){
+			ev_id=d3.event.target.id
+			console.log(ev_id);
+			if(ev_id=="nextB")choice=null;
+			else if(ev_id=="doubleB")choice="D";
+			else if(ev_id=="hitB")choice="H";
+			else if(ev_id=="standB")choice="S";
+			else if(ev_id=="splitB")choice="SP";
+			me.game_step(choice);
+		})
 	return me;
 }
