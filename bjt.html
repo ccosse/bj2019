@@ -1,72 +1,140 @@
 <html>
 <head>
-<title>Strategy</title>
-<style>
-#strategy_div{width:100%;background-color:#AFA;}
-#quiz_div{width:100%;background-color:steelblue;}
-td{font-size:20pt}
-th,td,table{border:1px solid black;}
-table{width:100%;height:100%}
-td{text-align:center;vertical-align:middle;}
-.toprow{background-color:lightblue}
-.leftcol{background-color:#E88}
-</style>
+	<title>Strategy</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="d3_blackjack.js"></script>
+
+	<style>
+		#strategy_div{width:100%;background-color:#333;}
+		#quiz_div{width:100%;background-color:#333;}
+		td{font-size:20pt}
+		th,td,table{border:1px solid black;}
+		table{width:100%;height:100%}
+		td{text-align:center;vertical-align:middle;color:antiquewhite;}
+		.toprow{background-color:#444}
+		.leftcol{background-color:#444}
+		.corner{background-color:#333}
+
+		img{}
+		.vspace {height:50px}
+		.modal {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			left: 0;
+			top: 0;
+			width: 100%; /* Full width */
+			height: 100%; /* Full height */
+			overflow: auto; /* Enable scroll if needed */
+			background-color: rgb(0,0,0); /* Fallback color */
+			background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+			color:white;
+			font-size:20pt;
+		}
+		.bj_quiz {
+			width:100%;height:400px;background-color:drakgreen;
+		}
+		.animate {
+			-webkit-animation: animatezoom 0.6s;
+			animation: animatezoom 0.6s
+		}
+		@-webkit-keyframes animatezoom {
+			from {-webkit-transform: scale(0)}
+			to {-webkit-transform: scale(1)}
+		}
+		@keyframes animatezoom {
+			from {transform: scale(0)}
+			to {transform: scale(1)}
+		}
+		.button {
+			border: 2px solid white;
+			border-radius: 3px;
+			padding: 0.3rem 0.5rem;
+			cursor: pointer;
+			transition: background 40ms;
+			font-size:16pt;
+		}
+		#doneB {
+			position: fixed;
+			bottom: 40px;
+			right: 30px;
+			background-color: #247724;
+			color:white;
+		}
+		#nextB {
+			background-color: #247724;
+			color:white;
+		}
+	</style>
 </head>
 
 <body>
-
-<table>
-<tr><td>
 <div id="strategy_div" class="main"></div>
-</td><td>
-<div id="quiz_div" class="main"></div>
-</td></tr>
-</table>
 
 <script>
+//Club,Spade,Heart,Diamond
+//A,K,Q,J,10,9...2
+cshd=4
+cshd_idcs=[cshd,]
+for(var idx=1;idx<14;idx++){
+	cshd+=4;
+	cshd_idcs.push(cshd);
+}
+cshd_idcs=cshd_idcs.reverse()
+
 const rcvals=[
-	['','2','3','4','5','6','7','8','9','10','A',],
-	['8','H','H','H','D','D','H','H','H','H','H',],
-	['9','D','D','D','D','D','H','H','H','H','H',],
-	['10','D','D','D','D','D','D','D','D','H','H',],
-	['11','D','D','D','D','D','D','D','D','D','D',],
-	['12','H','H','S','S','S','H','H','H','H','H',],
-	['13','S','S','S','S','S','H','H','H','H','H',],
-	['14','S','S','S','S','S','H','H','H','H','H',],
-	['15','S','S','S','S','S','H','H','H','H','H',],
-	['16','S','S','S','S','S','H','H','H','H','H',],
-	['A2','H','H','D','D','D','H','H','H','H','H',],
-	['A3','H','H','D','D','D','H','H','H','H','H',],
-	['A4','H','H','D','D','D','H','H','H','H','H',],
-	['A5','H','H','D','D','D','H','H','H','H','H',],
-	['A6','D','D','D','D','D','H','H','H','H','H',],
-	['A7','S','D','D','D','D','S','S','H','H','S',],
-	['A8','S','S','S','S','D','S','S','H','H','S',],
-	['A9','S','S','S','S','S','S','S','S','S','S',],
-	['AA','SP','SP','SP','SP','SP','SP','SP','SP','SP','SP',],
-	['22','H','SP','SP','SP','SP','SP','H','H','H','H',],
-	['33','H','H','SP','SP','SP','SP','H','H','H','H',],
-	['66','SP','SP','SP','SP','SP','H','H','H','H','H',],
-	['77','SP','SP','SP','SP','SP','SP','H','H','SP','H',],
-	['88','SP','SP','SP','SP','SP','SP','SP','SP','SP','SP',],
-	['99','SP','SP','SP','SP','SP','S','SP','SP','S','S',],
-	['1010','S','S','S','S','S','S','S','S','S','S',],
+	['','','','','','','','','','','',],
+	['<img src="img_card/'+cshd_idcs[1]+'.png"><img src="img_card/'+cshd_idcs[5]+'.png">','H','H','H','D','D','H','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[1]+'.png"><img src="img_card/'+cshd_idcs[6]+'.png">','D','D','D','D','D','H','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[1]+'.png"><img src="img_card/'+cshd_idcs[7]+'.png">','D','D','D','D','D','D','D','D','H','H',],
+	['<img src="img_card/'+cshd_idcs[1]+'.png"><img src="img_card/'+cshd_idcs[8]+'.png">','D','D','D','D','D','D','D','D','D','D',],
+	['<img src="img_card/'+cshd_idcs[1]+'.png"><img src="img_card/'+cshd_idcs[9]+'.png">','H','H','S','S','S','H','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[2]+'.png"><img src="img_card/'+cshd_idcs[9]+'.png">','S','S','S','S','S','H','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[3]+'.png"><img src="img_card/'+cshd_idcs[9]+'.png">','S','S','S','S','S','H','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[4]+'.png"><img src="img_card/'+cshd_idcs[9]+'.png">','S','S','S','S','S','H','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[5]+'.png"><img src="img_card/'+cshd_idcs[9]+'.png">','S','S','S','S','S','H','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[1]+'.png">','H','H','D','D','D','H','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[2]+'.png">','H','H','D','D','D','H','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[3]+'.png">','H','H','D','D','D','H','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[4]+'.png">','H','H','D','D','D','H','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[5]+'.png">','D','D','D','D','D','H','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[6]+'.png">','S','D','D','D','D','S','S','H','H','S',],
+	['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[7]+'.png">','S','S','S','S','D','S','S','H','H','S',],
+	['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[8]+'.png">','S','S','S','S','S','S','S','S','S','S',],
+	['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[9]+'.png">','BJ','BJ','BJ','BJ','BJ','BJ','BJ','BJ','BJ','BJ',],
+	['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[13]+'.png">','SP','SP','SP','SP','SP','SP','SP','SP','SP','SP',],
+	['<img src="img_card/'+cshd_idcs[1]+'.png"><img src="img_card/'+cshd_idcs[1]+'.png">','H','SP','SP','SP','SP','SP','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[2]+'.png"><img src="img_card/'+cshd_idcs[2]+'.png">','H','H','SP','SP','SP','SP','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[5]+'.png"><img src="img_card/'+cshd_idcs[5]+'.png">','SP','SP','SP','SP','SP','H','H','H','H','H',],
+	['<img src="img_card/'+cshd_idcs[6]+'.png"><img src="img_card/'+cshd_idcs[6]+'.png">','SP','SP','SP','SP','SP','SP','H','H','SP','H',],
+	['<img src="img_card/'+cshd_idcs[7]+'.png"><img src="img_card/'+cshd_idcs[7]+'.png">','SP','SP','SP','SP','SP','SP','SP','SP','SP','SP',],
+	['<img src="img_card/'+cshd_idcs[8]+'.png"><img src="img_card/'+cshd_idcs[8]+'.png">','SP','SP','SP','SP','SP','S','SP','SP','S','S',],
+	['<img src="img_card/'+cshd_idcs[9]+'.png"><img src="img_card/'+cshd_idcs[9]+'.png">','S','S','S','S','S','S','S','S','S','S',],
 ];
-html="<table>"
+
+html="<table id='bjt'>"
 for(var ridx=0;ridx<rcvals.length;ridx++){
 	if(ridx==0){html+="<tr class='toprow'>"}
 	else{html+="<tr>"}
 	for(var cidx=0;cidx<rcvals[ridx].length;cidx++){
-		if(cidx==0){html+="<td class='leftcol'>"+rcvals[ridx][cidx]+"</td>"}
-		else{html+="<td>"+rcvals[ridx][cidx]+"</td>"}
+		cid=""+ridx+"_"+cidx;
+		if(ridx==0 && cidx==0){html+="<td class='corner'></td>"}
+		else if(ridx==0 && cidx==10){html+="<td><img src='./img_card/"+cshd_idcs[13]+".png'></td>"}
+		else if(ridx==0){html+="<td class='toprow'><img src='img_card/"+cshd_idcs[cidx]+".png'></td>"}
+		else if(cidx==0){html+="<td class='leftcol'>"+rcvals[ridx][cidx]+"</td>"}
+		else{html+="<td id='"+cid+"'>"+rcvals[ridx][cidx]+"</td>"}
 	}
 	html+="</tr>"
 }
 html+="</table>"
+html+="<center>"
+for(var idx=1;idx<14;idx++){
+	html+="<img src='img_card/"+cshd_idcs[idx]+".png'>'"
+}
+html+="</center>";
 document.getElementById("strategy_div").innerHTML=html;
 
-document.getElementById("quiz_div").innerHTML="";
-
+var bjq=BlackJackQuiz("#bjt");
 
 </script>
 </body>
