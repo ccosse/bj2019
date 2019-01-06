@@ -168,11 +168,15 @@ var BlackJackQuiz=function(obj_id){
 			h2=hand[2];if(hand[2]==13){h2=11;}else if(hand[2]>10){h2=10;}else if(h2<10){h2+=1;}
 			h3=hand[3];if(hand[3]==13){h3=11;}else if(hand[3]>10){h3=10;}else if(h3<10){h3+=1;}
 			for(var ridx=rcvals.length-1;ridx>-1;ridx--){
+
 				r0=rcvals[ridx][0][0];
 				if(r0==13)r0=11;
 				else if(r0<10)r0+=1;
+
 				r1=rcvals[ridx][0][1];
-				if(r1<10)r1+=1;
+				if(r1==13)r1=11;
+				else if(r1<10)r1+=1;
+
 				console.log(r0,r1,[h2,h3])
 				if((r0+r1)==(h2+h3)){
 					if(r0==r1 && h2!=h3){console.log("continue");continue;}//unless both are pairs#small issue:10,J/Q/K -> r0==r1 after value-adjustment, but not really pair; is okay since stand for all, either way.
