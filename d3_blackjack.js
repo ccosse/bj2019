@@ -5,42 +5,13 @@ var BlackJackQuiz=function(obj_id){
 	//But we can at least see what the dealer had
 
 	var me={}
-	cshd=4
+	cshd=2
 	cshd_idcs=[cshd,]
 	for(var idx=1;idx<14;idx++){
 		cshd+=4;
 		cshd_idcs.push(cshd);
 	}
 	cshd_idcs=cshd_idcs.reverse()
-
-	const asdf=[
-		['','','','','','','','','','','',],
-		['<img src="img_card/'+cshd_idcs[1]+'.png"><img src="img_card/'+cshd_idcs[5]+'.png">','H','H','H','D','D','H','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[1]+'.png"><img src="img_card/'+cshd_idcs[6]+'.png">','D','D','D','D','D','H','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[1]+'.png"><img src="img_card/'+cshd_idcs[7]+'.png">','D','D','D','D','D','D','D','D','H','H',],
-		['<img src="img_card/'+cshd_idcs[1]+'.png"><img src="img_card/'+cshd_idcs[8]+'.png">','D','D','D','D','D','D','D','D','D','D',],
-		['<img src="img_card/'+cshd_idcs[1]+'.png"><img src="img_card/'+cshd_idcs[9]+'.png">','H','H','S','S','S','H','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[2]+'.png"><img src="img_card/'+cshd_idcs[9]+'.png">','S','S','S','S','S','H','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[3]+'.png"><img src="img_card/'+cshd_idcs[9]+'.png">','S','S','S','S','S','H','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[4]+'.png"><img src="img_card/'+cshd_idcs[9]+'.png">','S','S','S','S','S','H','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[5]+'.png"><img src="img_card/'+cshd_idcs[9]+'.png">','S','S','S','S','S','H','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[1]+'.png">','H','H','D','D','D','H','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[2]+'.png">','H','H','D','D','D','H','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[3]+'.png">','H','H','D','D','D','H','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[4]+'.png">','H','H','D','D','D','H','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[5]+'.png">','D','D','D','D','D','H','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[6]+'.png">','S','D','D','D','D','S','S','H','H','S',],
-		['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[7]+'.png">','S','S','S','S','D','S','S','H','H','S',],
-		['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[8]+'.png">','S','S','S','S','S','S','S','S','S','S',],
-		['<img src="img_card/'+cshd_idcs[13]+'.png"><img src="img_card/'+cshd_idcs[13]+'.png">','SP','SP','SP','SP','SP','SP','SP','SP','SP','SP',],
-		['<img src="img_card/'+cshd_idcs[1]+'.png"><img src="img_card/'+cshd_idcs[1]+'.png">','H','SP','SP','SP','SP','SP','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[2]+'.png"><img src="img_card/'+cshd_idcs[2]+'.png">','H','H','SP','SP','SP','SP','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[5]+'.png"><img src="img_card/'+cshd_idcs[5]+'.png">','SP','SP','SP','SP','SP','H','H','H','H','H',],
-		['<img src="img_card/'+cshd_idcs[6]+'.png"><img src="img_card/'+cshd_idcs[6]+'.png">','SP','SP','SP','SP','SP','SP','H','H','SP','H',],
-		['<img src="img_card/'+cshd_idcs[7]+'.png"><img src="img_card/'+cshd_idcs[7]+'.png">','SP','SP','SP','SP','SP','SP','SP','SP','SP','SP',],
-		['<img src="img_card/'+cshd_idcs[8]+'.png"><img src="img_card/'+cshd_idcs[8]+'.png">','SP','SP','SP','SP','SP','S','SP','SP','S','S',],
-		['<img src="img_card/'+cshd_idcs[9]+'.png"><img src="img_card/'+cshd_idcs[9]+'.png">','S','S','S','S','S','S','S','S','S','S',],
-	];
 
 	const rcvals=[
 		['','','','','','','','','','','',],
@@ -76,8 +47,18 @@ var BlackJackQuiz=function(obj_id){
 	me.popup_html='<div style="height:50px;"></div>';//vertical spacer
 	me.popup_html+='<center><div style="width:80%";>BlackJack 2019<br>';
 	me.popup_html+='<br>';
+	me.popup_html+='<div id="bj_stats" class="bj_stats"></div>';
 	me.popup_html+='<div id="bj_quiz" class="bj_quiz"></div>';
-	me.popup_html+="<input class='button' type='button' id='nextB' value='Next'></div></center>";
+	me.popup_html+="<div id='step0_buttons'><input class='button actionB' type='button' id='nextB' value='Next'></div></div>";
+	me.popup_html+="<div id='step1_buttons' style='display:none;'><table><tr>";
+	me.popup_html+="<td><input class='button actionB' type='button' id='doubleB' value='Double'></td>";
+	me.popup_html+="<td><input class='button actionB' type='button' id='hitB' value='Hit'></td>";
+	me.popup_html+="<td><input class='button actionB' type='button' id='standB' value='Stand'></td>";
+	me.popup_html+="<td><input class='button actionB' type='button' id='splitB' value='Split'></td>";
+	me.popup_html+="</tr></table>"
+	me.popup_html+="</div></div>";
+	me.popup_html+="</center>";
+	me.popup_html+="<input id=opacityB type='range' min='200' max='1000' step='10' value='600'/>"
 	me.popup_html+="<input class='button' type='button' id='doneB' value='Close'></div></center>";
 
 	d3.select(obj_id)
@@ -118,8 +99,16 @@ var BlackJackQuiz=function(obj_id){
 	me.step=0
 	me.hand=me.deal()
 
-	d3.select("#nextB")
+	d3.selectAll(".actionB")
 		.on("click",function(){
+			ev_id=d3.event.target.id
+			console.log(ev_id);
+			if(ev_id=="nextB")choice=null;
+			else if(ev_id=="doubleB")choice="D";
+			else if(ev_id=="hitB")choice="H";
+			else if(ev_id=="standB")choice="S";
+			else if(ev_id=="splitB")choice="SP";
+
 			d3.event.preventDefault();
 
 			d3.select("#bj_quiz").html("")
@@ -209,7 +198,7 @@ var BlackJackQuiz=function(obj_id){
 			if(row>0){
 				cid=""+row+"_"+h1;
 				td=document.getElementById(cid);
-				if(td && me.step==0)td.style='background-color:green;';
+				if(td && me.step==0)td.style='background-color:white;';
 				if(td && me.step==1)td.style='background-color:red;';
 				else{console.log("no cell for that pair ... basic rule!")}
 				if(td && rcvals[row][h1]=="BJ"){
@@ -222,20 +211,69 @@ var BlackJackQuiz=function(obj_id){
 			if(me.step>0){
 				if(hard_total>16){
 					d3.select("#action")
-						.text("STAND!!!");
+						.text("S")
+						.attr('class','button')
+						.style('color','green');
+					if(choice!="S")me.wrong();
+					else me.right();
 				}
 				else if(hard_total<8 && h3!=h2){
 					d3.select("#action")
-						.text("HIT!!!");
+						.text("H")
+						.attr('class','button')
+						.style('color','white');
+					if(choice!="H")me.wrong();
+					else me.right();
 				}
 				else{
 					d3.select("#action")
-						.text(rcvals[row][h1]);
+						.text(rcvals[row][h1])
+						.attr('class','button')
+						.style('color','orange');
+					if(choice!=rcvals[row][h1] && rcvals[row][h1]!='BJ')me.wrong();
+					else me.right();
 				}
 			}
 			me.step+=1;
 			if(me.step>1)me.step=0;
+			if(me.step==0){
+				d3.select("#step1_buttons").style('display','none');
+				d3.select("#step0_buttons").style('display','block');
+			}
+			else{
+				d3.select("#step1_buttons").style('display','block');
+				d3.select("#step0_buttons").style('display','none');
+			}
+
 		})
 
+	me.num_correct=0;
+	me.num_incorrect=0;
+
+	me.reset=function(){
+		me.num_correct=0;
+		me.num_incorrect=0;
+		me.update_stats();
+	}
+
+	me.update_stats=function(){
+		stats_html="correct: "+me.num_correct+" incorrect: "+me.num_incorrect;
+		d3.select("#bj_stats")
+			.html(stats_html);
+	}
+
+	me.wrong=function(){console.log(choice, "is WRONG");me.num_incorrect+=1;me.update_stats();}
+
+	me.right=function(){console.log(choice, "is RIGHT");me.num_correct+=1;me.update_stats();}
+
+	me.reset();
+
+	d3.selectAll("#opacityB")
+		.on("input",function(){
+			op=parseFloat(parseFloat(this.value)/1000.)
+			//console.log(op);
+			d3.select('.modal').style('opacity',op)
+		})
+	d3.select('.modal').style('opacity',0.6)
 	return me;
 }
