@@ -37,6 +37,7 @@ var BlackJackQuiz=function(obj_id){
 		[[13,13],'SP','SP','SP','SP','SP','SP','SP','SP','SP','SP',],
 		[[1,1],'H','SP','SP','SP','SP','SP','H','H','H','H',],
 		[[2,2],'H','H','SP','SP','SP','SP','H','H','H','H',],
+		[[3,3],'H','H','H','SP','D','H','H','H','H','H',],
 		[[5,5],'SP','SP','SP','SP','SP','H','H','H','H','H',],
 		[[6,6],'SP','SP','SP','SP','SP','SP','H','H','SP','H',],
 		[[7,7],'SP','SP','SP','SP','SP','SP','SP','SP','SP','SP',],
@@ -98,6 +99,8 @@ var BlackJackQuiz=function(obj_id){
 	}
 
 	me.step=0
+	//me.missed=[[13,13,13,13],[2,2,13,2],[4,3,13,3],[5,13,13,5],[10,3,8,6]]
+	me.missed=[[2,5,4,4],[7,3,5,5],]
 	me.hand=me.deal()
 
 	me.game_step=function(choice){
@@ -129,7 +132,6 @@ var BlackJackQuiz=function(obj_id){
 					.append("img")
 					.attr("src","img_card/"+cshd_idcs[d0_idx]+".png")
 			}
-
 
 			d1_idx=hand[1]
 			d3.select("#bj_quiz")
@@ -198,7 +200,7 @@ var BlackJackQuiz=function(obj_id){
 			if(hand[1]==13){h1=10;}
 			else if(hand[1]>9){h1=9;}
 
-			console.log(row,h1)
+			console.log(row,h1);
 			if(row>0){
 				cid=""+row+"_"+h1;
 				td=document.getElementById(cid);
@@ -239,6 +241,12 @@ var BlackJackQuiz=function(obj_id){
 					if(choice!=rcvals[row][h1] && rcvals[row][h1]!='BJ')me.wrong();
 					else me.right();
 				}
+			}
+			else if(rcvals[row][h1]!="BJ"){
+				d3.select("#action")
+					.text("?")
+					.attr('class','button')
+					.style('color','yellow');
 			}
 			me.step+=1;
 			if(me.step>1)me.step=0;
