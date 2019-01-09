@@ -76,6 +76,10 @@
 			background-color: #247724;
 			color:white;
 		}
+		.S {background-color:#222;}
+		.SP {background-color:goldenrod;}
+		.H {background-color:forestgreen;}
+		.D {background-color:gold;}
 	</style>
 </head>
 
@@ -134,7 +138,7 @@ for(var ridx=0;ridx<rcvals.length;ridx++){
 		else if(ridx==0 && cidx==10){html+="<td><img src='./img_card/"+cshd_idcs[13]+".png'></td>"}
 		else if(ridx==0){html+="<td class='toprow'><img src='img_card/"+cshd_idcs[cidx]+".png'></td>"}
 		else if(cidx==0){html+="<td class='leftcol'>"+rcvals[ridx][cidx]+"</td>"}
-		else{html+="<td id='"+cid+"'>"+rcvals[ridx][cidx]+"</td>"}
+		else{html+="<td class='"+rcvals[ridx][cidx]+"' id='"+cid+"'>"+rcvals[ridx][cidx]+"</td>"}
 	}
 	html+="</tr>"
 }
